@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 const baseUrl = '/api/blogs'
 
 const getAll = () => {
@@ -6,4 +7,10 @@ const getAll = () => {
 	return request.then(response => response.data)
 }
 
-export default { getAll }
+let token
+
+const setToken = newToken => {
+	token = `bearer ${newToken}`
+}
+
+export default {getAll, setToken}
