@@ -10,6 +10,11 @@ const App = () => {
 	const [ password, setPassword ] = useState('')
 	const [ user, setUser ] = useState(null)
 
+	const [ title, setTitle ] = useState('')
+	const [ author, setAuthor ] = useState('')
+	const [ url, setUrl ] = useState('')
+
+
 	useEffect(() => {
 		blogService.getAll().then(blogs =>
 			setBlogs(blogs)
@@ -66,6 +71,45 @@ const App = () => {
 		</form>
 	)
 
+	const addBlog = (event) => {
+		event.preventDefault()
+		const blogObject = {
+			author,
+			title,
+			url,
+		}
+
+		blogService
+			.create(blogObject)
+			.then(returnedBlog => {
+				setBlogs(blogs.concat(returnedBlog))
+				setTitle('')
+				setAuthor('')
+				setUrl('')
+			})
+			.catch(error => console.log(error))
+	}
+
+	const createNewBlog = () => {
+		return (
+			<form onSubmit={addBlog}>
+				<div>title:
+					<input type="text" value={title}
+					       onChange={({target}) => setTitle(target.value)}/>
+				</div>
+				<div>author:
+					<input type="text" value={author}
+					       onChange={({target}) => setAuthor(target.value)}/>
+				</div>
+				<div>url:
+					<input type="url" value={url}
+					       onChange={({target}) => setUrl(target.value)}/>
+				</div>
+				<button type="submit">create</button>
+			</form>
+		)
+	}
+
 	return (
 		<div>
 			<h2>blogs</h2>
@@ -76,6 +120,7 @@ const App = () => {
 						console.log('cleared storage')
 					}}>logout</button>
 				</p>
+				{createNewBlog()}
 			</div>}
 			{blogs.map(blog =>
 				<Blog key={blog.id} blog={blog}/>
