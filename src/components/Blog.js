@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 
-const Blog = ({blog}) => {
+import blogService from "../services/blogs";
+
+const Blog = ({blog, setBlogs}) => {
 	const blogStyle = {
 		paddingTop: 10,
 		paddingLeft: 2,
@@ -17,6 +19,27 @@ const Blog = ({blog}) => {
 		setView(!view)
 	}
 
+	const updateLike = async () => {
+		blog.likes += 1
+		const newBlog = {
+			likes: blog.likes,
+			user: blog.user.id,
+			author: blog.author,
+			title: blog.title,
+			url: blog.url,
+		}
+
+
+		try {
+			const updatedBlog = await blogService.update(blog.id, newBlog)
+			setBlogs((prev) => {
+				prev.map(b => b.id !== blog.id ? b : updatedBlog)
+			})
+		} catch (e) {
+			console.dir(e)
+		}
+	}
+
 	const compactView = () => (
 		<div>
 			{blog.title}
@@ -31,7 +54,7 @@ const Blog = ({blog}) => {
 			<div>{blog.url}</div>
 			<div>
 				likes {blog.likes}
-				<button>like</button>
+				<button onClick={updateLike}>like</button>
 			</div>
 			<div>{blog.author}</div>
 		</div>
