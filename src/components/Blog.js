@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes           from "prop-types";
 
 import blogService from "../services/blogs";
 
@@ -71,6 +72,13 @@ const Blog = ({blog, setBlogs, deleteBlog, user}) => {
 			{view ? compactView() : fullView()}
 		</div>
 	)
+}
+
+Blog.propTypes = {
+	blog: PropTypes.object.isRequired,
+	setBlogs: PropTypes.func.isRequired,
+	deleteBlog: PropTypes.func.isRequired,
+	user: PropTypes.object.isRequired
 }
 
 export default Blog
