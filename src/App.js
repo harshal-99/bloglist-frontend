@@ -115,7 +115,8 @@ const App = () => {
 				{blogForm()}
 			</div>}
 			{blogs.map(blog =>
-				<Blog key={blog.id} blog={blog} setBlogs={setBlogs}/>
+				<Blog key={blog.id} blog={blog} setBlogs={setBlogs}
+				      deleteBlog={blogService.deleteBlog} user={user}/>
 			)}
 		</div>
 	)
