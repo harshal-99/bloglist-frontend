@@ -68,7 +68,7 @@ const Blog = ({ blog, setBlogs, deleteBlog, user }) => {
   )
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       {view ? compactView() : fullView()}
     </div>
   )
