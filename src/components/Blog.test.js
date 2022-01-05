@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect'
-import { render }    from '@testing-library/react'
-import { prettyDOM } from '@testing-library/dom'
+import { render, fireEvent } from '@testing-library/react'
+import { prettyDOM }         from '@testing-library/dom'
 
 
 import Blog from "./Blog"
@@ -11,6 +11,7 @@ const initialBlogs = [
 		author: "Michael Chan",
 		url: "https://reactpatterns.com/",
 		likes: 7,
+		user: {username: "Michael"}
 	},
 	{
 		title: "Go To Statement Considered Harmful",
@@ -47,14 +48,14 @@ const initialBlogs = [
 ]
 
 test('<Blog/> renders title and author by default', () => {
-	// const createdBlog = jest.fn()
 
 	const component = render(
-		<Blog user={{}} deleteBlog={() => {}} blog={initialBlogs[0]}
-		      setBlogs={() => {}}/>
+		<Blog user={{}} deleteBlog={() => {
+		}} blog={initialBlogs[0]}
+		      setBlogs={() => {
+		      }}/>
 	)
 
-	component.debug()
 
 	expect(component.container).toHaveTextContent(
 		"React patterns"
@@ -63,5 +64,32 @@ test('<Blog/> renders title and author by default', () => {
 	expect(component.container).not.toHaveTextContent(
 		"https://reactpatterns.com/"
 	)
-
 })
+
+test('<Blog /> shows likes and url after clicking button', () => {
+	const mockHandler = jest.fn()
+
+	const component = render(
+		<Blog user={{}} deleteBlog={() => {
+		}}
+		      blog={initialBlogs[0]}
+		      setBlogs={() => {
+		      }}
+		/>
+	)
+
+	const button = component.getByText('view')
+	fireEvent.click(button)
+
+	component.debug()
+
+	expect(component.container).toHaveTextContent(
+		"https://reactpatterns.com/"
+	)
+
+
+	expect(component.container).toHaveTextContent(
+		"likes 7"
+	)
+})
+

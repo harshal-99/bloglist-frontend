@@ -45,12 +45,14 @@ const Blog = ({ blog, setBlogs, deleteBlog, user }) => {
       deleteBlog(blog.id)
     }
   }
+
   const compactView = () => (
     <div>
       {blog.title}
       <button onClick={toggleView}>{viewLabel}</button>
     </div>
   )
+
   const fullView = () => (
     <div>
       <div>{blog.title}
