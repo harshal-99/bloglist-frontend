@@ -47,7 +47,7 @@ const initialBlogs = [
 ]
 
 test('<Blog/> renders title and author by default', () => {
-	const createdBlog = jest.fn()
+	// const createdBlog = jest.fn()
 
 	const component = render(
 		<Blog user={{}} deleteBlog={() => {}} blog={initialBlogs[0]}
