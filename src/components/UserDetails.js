@@ -1,8 +1,16 @@
 import {useRouteMatch} from "react-router";
-import PropTypes from "prop-types";
 
-const UserDetails = ({users}) => {
+import {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {getAllUsers} from "../reducers/usersReducer";
 
+const UserDetails = () => {
+	const dispatch = useDispatch()
+	const users = useSelector(state => state.users)
+
+	useEffect(() => {
+		dispatch(getAllUsers())
+	}, [])
 
 	const match = useRouteMatch('/users/:id')
 	const user = match
@@ -25,10 +33,6 @@ const UserDetails = ({users}) => {
 			</ul>
 		</div>
 	)
-}
-
-UserDetails.protoType = {
-	users: PropTypes.array.isRequired
 }
 
 
