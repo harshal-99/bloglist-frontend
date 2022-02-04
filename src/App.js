@@ -8,16 +8,14 @@ import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 
 import blogService from './services/blogs'
-import loginService from './services/login'
+
 
 import {createBlog, initializeBlogs} from "./reducers/blogReducer";
-import {setError, setSuccess} from "./reducers/notificationReducer";
-import {initialState, initUser, login, logout} from "./reducers/userReducer";
+import {setSuccess} from "./reducers/notificationReducer";
+import {initialState, initUser, logout} from "./reducers/userReducer";
 
 
 const App = () => {
-	const [username, setUsername] = useState('')
-	const [password, setPassword] = useState('')
 
 	const blogFormRef = useRef()
 
@@ -37,19 +35,6 @@ const App = () => {
 		}, []
 	)
 
-	const handleLogin = async (event) => {
-		event.preventDefault()
-		console.log('logging in with', username, password)
-		try {
-			dispatch(login(username, password))
-			setUsername('')
-			setPassword('')
-
-			dispatch(setSuccess('login success', 5))
-		} catch (e) {
-			dispatch(setError(e.response.data.error, 5))
-		}
-	}
 
 	const handleLogout = () => {
 		dispatch(logout)
@@ -57,13 +42,7 @@ const App = () => {
 
 	const loginForm = () => (
 		<Togglable buttonLabel="log in">
-			<LoginForm
-				username={username}
-				password={password}
-				handleUsernameChange={({target}) => setUsername(target.value)}
-				handlePasswordChange={({target}) => setPassword(target.value)}
-				handleSubmit={handleLogin}
-			/>
+			<LoginForm/>
 		</Togglable>
 	)
 
@@ -97,8 +76,8 @@ const App = () => {
 				{blogForm()}
 			</div>}
 			{blogs.map(blog =>
-				<Blog key={blog.id} blog={blog} blogs={blogs}
-				      deleteBlog={blogService.deleteBlog} />
+				<Blog key={blog.id} blog={blog}
+				      deleteBlog={blogService.deleteBlog}/>
 			)}
 		</div>
 	)
