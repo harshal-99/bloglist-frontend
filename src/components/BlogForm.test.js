@@ -2,13 +2,13 @@ import '@testing-library/jest-dom/extend-expect'
 import {render, fireEvent} from '@testing-library/react'
 import {prettyDOM} from '@testing-library/dom'
 
-import BlogForm from "./BlogForm";
+import Form from "./BlogForm";
 
 test('<BlogForm /> returns correct values', () => {
 	const createdBlog = jest.fn()
 
 	const component = render(
-		<BlogForm createdBlog={createdBlog}/>
+		<Form createdBlog={createdBlog}/>
 	)
 
 	const author = component.container.querySelector('#author')

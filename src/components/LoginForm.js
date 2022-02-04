@@ -1,9 +1,10 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {login} from "../reducers/userReducer";
 import {setError, setSuccess} from "../reducers/notificationReducer";
 import {useDispatch} from "react-redux";
+import Togglable from "./Togglable";
 
-const LoginForm = () => {
+const Form = () => {
 
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
@@ -53,5 +54,12 @@ const LoginForm = () => {
 	)
 }
 
+const LoginForm = () => {
+	return (
+		<Togglable buttonLabel="log in">
+			<Form/>
+		</Togglable>
+	)
+}
 
 export default LoginForm

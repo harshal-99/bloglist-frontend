@@ -1,7 +1,15 @@
-import {useState} from 'react'
+import React, {useState} from 'react'
+import {useDispatch} from "react-redux";
 import PropTypes from 'prop-types'
 
-const BlogForm = ({createdBlog}) => {
+import blogService from "../services/blogs";
+
+import Togglable from "./Togglable";
+
+import {createBlog} from "../reducers/blogReducer";
+import {setSuccess} from "../reducers/notificationReducer";
+
+const Form = ({createdBlog}) => {
 	const [title, setTitle] = useState('')
 	const [author, setAuthor] = useState('')
 	const [url, setUrl] = useState('')
@@ -42,7 +50,29 @@ const BlogForm = ({createdBlog}) => {
 	)
 }
 
-BlogForm.propType = {
+const BlogForm = () => {
+
+	const dispatch = useDispatch()
+
+	const addBlog = (blogObject) => {
+		blogService
+			.create(blogObject)
+			.then(returnedBlog => {
+				dispatch(createBlog(returnedBlog))
+			})
+			.catch(error => console.log(error))
+		dispatch(setSuccess(`a new blog ${blogObject.title} by ${blogObject.author} added`, 5))
+	}
+
+	return (
+		<Togglable buttonLabel="new Blog">
+			<Form createdBlog={addBlog}/>
+		</Togglable>
+	)
+}
+
+
+Form.propType = {
 	createdBlog: PropTypes.object.isRequired
 }
 
