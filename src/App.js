@@ -85,7 +85,6 @@ const App = () => {
 				dispatch(createBlog(returnedBlog))
 			})
 			.catch(error => console.log(error))
-
 		dispatch(setSuccess(`a new blog ${blogObject.title} by ${blogObject.author} added`, 5))
 	}
 
