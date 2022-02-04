@@ -1,86 +1,73 @@
-import React, { useState } from 'react'
-import PropTypes           from 'prop-types'
+import React, {useState} from 'react'
+import PropTypes from 'prop-types'
 
-import blogService from '../services/blogs'
+import {useDispatch} from "react-redux";
+import {updateBlog} from "../reducers/blogReducer";
+import {deleteBlog} from "../reducers/blogReducer";
 
-const Blog = ({ blog, setBlogs, deleteBlog, user }) => {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
+const Blog = ({blog, blogs, user}) => {
+	const dispatch = useDispatch()
 
-  const [ view, setView ] = useState(true)
+	const blogStyle = {
+		paddingTop: 10,
+		paddingLeft: 2,
+		border: 'solid',
+		borderWidth: 1,
+		marginBottom: 5
+	}
 
-  const viewLabel = view ? 'view' : 'hide'
+	const [view, setView] = useState(true)
 
-  const toggleView = () => {
-    setView(!view)
-  }
+	const viewLabel = view ? 'view' : 'hide'
 
-  const updateLike = async () => {
-    blog.likes += 1
-    const newBlog = {
-      likes: blog.likes,
-      user: blog.user.id,
-      author: blog.author,
-      title: blog.title,
-      url: blog.url,
-    }
+	const toggleView = () => {
+		setView(!view)
+	}
 
-    try {
-      const updatedBlog = await blogService.update(blog.id, newBlog)
-      setBlogs((prev) => {
-        prev.map(b => b.id !== blog.id ? b : updatedBlog)
-      })
-    } catch (e) {
-      console.dir(e)
-    }
-  }
+	const updateLike = async () => {
+		dispatch(updateBlog(blogs, blog))
+	}
 
-  const handleBlogDelete = () => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      deleteBlog(blog.id)
-    }
-  }
+	const handleBlogDelete = () => {
+		if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+			dispatch(deleteBlog(blogs, blog.id))
+		}
+	}
 
-  const compactView = () => (
-    <div>
-      {blog.title}
-      <button onClick={toggleView}>{viewLabel}</button>
-    </div>
-  )
+	const compactView = () => (
+		<div>
+			{blog.title}
+			<button onClick={toggleView}>{viewLabel}</button>
+		</div>
+	)
 
-  const fullView = () => (
-    <div>
-      <div>{blog.title}
-        <button onClick={toggleView}>{viewLabel}</button>
-      </div>
-      <div>{blog.url}</div>
-      <div>
+	const fullView = () => (
+		<div>
+			<div>{blog.title}
+				<button onClick={toggleView}>{viewLabel}</button>
+			</div>
+			<div>{blog.url}</div>
+			<div>
 				likes {blog.likes}
-        <button onClick={updateLike}>like</button>
-      </div>
-      <div>{blog.author}</div>
-      {blog.user.username === user.username && (
-        <button onClick={handleBlogDelete}>remove</button>)}
-    </div>
-  )
+				<button onClick={updateLike}>like</button>
+			</div>
+			<div>{blog.author}</div>
+			{blog.user.username === user?.username && (
+				<button onClick={handleBlogDelete}>remove</button>)}
+		</div>
+	)
 
-  return (
-    <div style={blogStyle} className="blog">
-      {view ? compactView() : fullView()}
-    </div>
-  )
+	return (
+		<div style={blogStyle} className="blog">
+			{view ? compactView() : fullView()}
+		</div>
+	)
 }
 
 Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  setBlogs: PropTypes.func.isRequired,
-  deleteBlog: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired
+	blog: PropTypes.object.isRequired,
+	blogs: PropTypes.array.isRequired,
+	user: PropTypes.object.isRequired
 }
 
 export default Blog
