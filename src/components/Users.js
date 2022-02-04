@@ -1,10 +1,11 @@
 import userService from "../services/user";
 import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 
 const User = ({user}) => {
 	return (
 		<tr>
-			<td>{user.name}</td>
+			<td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
 			<td>{user.blogs.length}</td>
 		</tr>
 	)
@@ -26,7 +27,7 @@ const Users = () => {
 			<table>
 				<thead>
 				<tr>
-					<th></th>
+					<th> </th>
 					<th>
 						blogs created
 					</th>
