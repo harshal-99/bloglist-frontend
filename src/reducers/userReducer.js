@@ -1,7 +1,7 @@
 import blogService from "../services/blogs";
 import loginService from "../services/login";
 
-const initialState = {
+export const initialState = {
 	user: "",
 	password: "",
 	token: ""
@@ -13,10 +13,10 @@ const userReducer = (state = initialState, action) => {
 			return action.data
 		}
 		case 'LOGOUT': {
-			return state
+			return action.data
 		}
 		case 'INIT_USER': {
-			return state
+			return action.data
 		}
 		default:
 			return state
@@ -24,7 +24,7 @@ const userReducer = (state = initialState, action) => {
 }
 
 
-/*export const login = (username, password) => {
+export const login = (username, password) => {
 	return async dispatch => {
 		const user = await loginService.login({username, password})
 
@@ -39,7 +39,7 @@ const userReducer = (state = initialState, action) => {
 			data: user
 		})
 	}
-}*/
+}
 
 export const initUser = () => {
 	const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -50,16 +50,21 @@ export const initUser = () => {
 			type: 'LOGIN',
 			data: user
 		}
+	} else {
+		return {
+			type: 'LOGOUT',
+			data: initialState
+		}
 	}
 }
 
-/*export const logout = () => {
+export const logout = () => {
 	window.localStorage.clear()
 	console.log('cleared storage')
 	return {
 		type: 'LOGOUT',
 		data: initialState
 	}
-}*/
+}
 
 export default userReducer

@@ -37,7 +37,7 @@ export const initializeBlogs = () => {
 	}
 }
 
-export const updateBlog = (blogs, blog) => {
+export const updateBlog = (blog) => {
 	blog.likes += 1
 	const newBlog = {
 		likes: blog.likes,
@@ -47,8 +47,8 @@ export const updateBlog = (blogs, blog) => {
 		url: blog.url,
 	}
 
-
-	return async dispatch => {
+	return async (dispatch, getState) => {
+		const {blogs} = getState()
 		try {
 			const updatedBlog = await blogService.update(blog.id, newBlog)
 			const newBlogs = blogs.map(b => b.id !== blog.id ? b : updatedBlog)
@@ -64,8 +64,9 @@ export const updateBlog = (blogs, blog) => {
 }
 
 
-export const deleteBlog = (blogs, id) => {
-	return async dispatch => {
+export const deleteBlog = (id) => {
+	return async (dispatch, getState) => {
+		const {blogs} = getState()
 		await blogService.deleteBlog(id)
 		const updatedBlog = blogs.filter(blog => blog.id !== id)
 		dispatch({
