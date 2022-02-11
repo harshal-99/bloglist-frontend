@@ -20,13 +20,11 @@ const App = () => {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		blogService
-			.getAll()
-			.then(() => dispatch(initializeBlogs()))
+		dispatch(initializeBlogs())
 	}, [])
 
 	useEffect(() => {
-			dispatch(initUser)
+			dispatch(initUser())
 		}, []
 	)
 
